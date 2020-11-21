@@ -13,9 +13,10 @@ export async function getAccessToken() {
   if (useWorkerKv) {
     // Read access token from Worker Kv
     const authKv = await WorkerKv.get('auth')
-    if (authKv && authKv.access_token && timestamp() < authKv.expire_at) {
+    const data = authKv && JSON.parse(authKv)
+    if (data && data.access_token && timestamp() < data.expire_at) {
       console.log('Fetched token from storage.')
-      return authKv.access_token
+      return data.access_token
     }
   } else {
     // Fetch access token from Google Firebase Database
