@@ -3,7 +3,7 @@ type = "webpack"
 workers_dev = true
 account_id = "4865201943dfcb083765d707af14f2e1"
 zone_id = "919c61ee46c01e58e2a30b68525c112d"
-route = "onedrive.ohhomybaby.xyz"
+routes = ["onedrive.ohhomybaby.xyz", "https://onedrive.ohhomybaby.xyz/*"]
 kv_namespaces = [
-  { binding = "WorkerKv", id = "868f7ce455ea48499f4241ccbe972303", preview_id = "f921cc006f0941fd9d260a11fd5f5ed4" }
+  { binding = "WorkerKv", id = "868f7ce455ea48499f4241ccbe972303", preview_id = "f921cc006f0941fd9d260a11fd5f5ed4" },
 ]
