@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+  repository_dispatch:
+    types: [n8n]
+    branches:
+      - master
 
 jobs:
   deploy:
