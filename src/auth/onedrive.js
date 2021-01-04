@@ -10,20 +10,11 @@ export async function getAccessToken() {
     return Math.floor(Date.now() / 1000)
   }
 
-  if (useWorkerKv) {
-    // Read access token from Worker Kv
-    const authKv = await WorkerKv.get('auth', 'json')
-    if (authKv && authKv.access_token && timestamp() < authKv.expire_at) {
-      console.log('Fetched token from storage.')
-      return authKv.access_token
-    }
-  } else {
-    // Fetch access token from Google Firebase Database
-    const data = await (await fetch(`${config.firebase_url}?auth=${FIREBASE_TOKEN}`)).json()
-    if (data && data.access_token && timestamp() < data.expire_at) {
-      console.log('Fetched token from storage.')
-      return data.access_token
-    }
+  // Fetch access token
+  const data = await BUCKET.get('onedrive', 'json')
+  if (data && data.access_token && timestamp() < data.expire_at) {
+    console.log('Fetched token from storage.')
+    return data.access_token
   }
 
   // Token expired, refresh access token with Microsoft API. Both international and china-specific API are supported
@@ -43,21 +34,11 @@ export async function getAccessToken() {
     console.info('Successfully refreshed access_token.')
     const data = await resp.json()
 
-    // Update expiration time at Google Firebase on token refresh
+    // Update expiration time on token refresh
     data.expire_at = timestamp() + data.expires_in
 
-    if (useWorkerKv) {
-      const storeKv = await WorkerKv.put('auth', JSON.stringify(data), { expiration: data.expire_at })
-    } else {
-      const store = await fetch(`${config.firebase_url}?auth=${FIREBASE_TOKEN}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: {
-          'content-type': 'application/json'
-        }
-      })
-      console.log(store.status)
-    }
+    await BUCKET.put('onedrive', JSON.stringify(data))
+    console.info('Successfully updated access_token.')
 
     // Finally, return access token
     return data.access_token
