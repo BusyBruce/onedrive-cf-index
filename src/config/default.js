@@ -15,11 +15,6 @@ const config = {
   base: '/Public/odindex-cf',
 
   /**
-   * The url for your Firebase Realtime Database storage, we'll cache your refresh_token / access_token here.
-   */
-  firebase_url: 'https://onedrive-cf-index-3c3af.firebaseio.com/auth.json',
-
-  /**
    * Feature: add OneDriveCN (21Vianet) support
    * Usage: simply change `useOneDriveCN` to true
    */
@@ -79,16 +74,10 @@ const config = {
   /**
    * Feature: Proxy Download
    * Use Cloudflare as a relay to speed up download. (Especially in Mainland China)
-   * Example: https://storage.spencerwoo.com/🥟%20Some%20test%20files/Previews/eb37c02438f.png?raw=true&proxied
+   * Example: https://storage.spencerwoo.com/🥟%20Some%20test%20files/Previews/eb37c02438f.png?raw&proxied
    * You can also embed this link (url encoded) directly inside Markdown or HTML.
    */
-  proxyDownload: true,
-
-  /**
-   * Feature: Worker Kv
-   * Use Worker Kv to store refresh_token
-   */
-  useWorkerKv: true
+  proxyDownload: true
 }
 
 export default config
